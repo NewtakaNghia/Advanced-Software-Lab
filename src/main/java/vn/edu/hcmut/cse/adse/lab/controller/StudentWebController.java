@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 import vn.edu.hcmut.cse.adse.lab.service.StudentService;
 import vn.edu.hcmut.cse.adse.lab.entity.Student;
@@ -20,16 +20,16 @@ public class StudentWebController {
 
     // GET http://localhost:8080/students
     @GetMapping
-    public String getAllStudents(Model model) {
-        // 1. Lấy dữ liệu từ service
-        List<Student> students = service.getAll();
+    public String getAllStudents(@RequestParam(required = false) String keyword, Model model) {
+        List<Student> students;
+        if(keyword != null && !keyword.isEmpty()) {
+            students = service.searchByName(keyword);
+        } else {
+            students = service.getAll();
+        }
 
-        // 2.Đóng gói dữ liệu vào "Model" để sang View
-        // key dsSinhVien sẽ được sử dụng bên file HTML
         model.addAttribute("dsSinhVien", students);
 
-        // 3. TRả về tên của View (Không cần đuôi .html)
-        // Spring tự động tìm file tại src/main/resources/templates/students.html
         return "students";
     }
 }

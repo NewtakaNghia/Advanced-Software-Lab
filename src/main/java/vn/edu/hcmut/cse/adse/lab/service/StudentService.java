@@ -19,4 +19,11 @@ public class StudentService {
     public Student getById(String id) {
         return repository.findById(id).orElse(null);
     }
+
+    public List<Student> searchByName(String keyword) {
+        if(keyword == null || keyword.trim().isEmpty()) {
+            return repository.findAll();
+        }
+        return repository.findByNameContainingIgnoreCase(keyword);
+    }
 }
