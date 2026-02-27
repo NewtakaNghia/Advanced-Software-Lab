@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi Tiết Sinh Viên</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            padding: 20px;
+        }
+        .detail-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            max-width: 500px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .detail-row {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .detail-label {
+            font-weight: bold;
+            display: inline-block;
+            width: 120px;
+        }
+        .action-group {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        /* CSS cho các nút bấm */
+        .btn {
+            padding: 8px 15px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 16px;
+        }
+        .btn-back { background-color: #6c757d; color: white; }
+        .btn-edit { background-color: #ffc107; color: black; }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .btn:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+    <h1>Thông Tin Chi Tiết Sinh Viên</h1>
+
+    <div class="detail-card" th:if="${student != null}">
+        <div class="detail-row">
+            <span class="detail-label">ID:</span>
+            <span th:text="${student.id}">ID Mẫu</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Họ và Tên:</span>
+            <span th:text="${student.name}">Tên Mẫu</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span th:text="${student.email}">Email Mẫu</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Tuổi:</span>
+            <span th:text="${student.age}">0</span>
+        </div>
+
+        <div class="action-group">
+            <a th:href="@{/students}" class="btn btn-back">Quay Lại</a>
+
+            <a th:href="@{/students/edit/{id}(id=${student.id})}" class="btn btn-edit">Chỉnh Sửa</a>
+
+            <form th:action="@{/students/delete/{id}(id=${student.id})}" method="POST" 
+                  onsubmit="return confirm('Bạn có chắc chắn muốn xóa sinh viên này không? Hành động này không thể hoàn tác!');" 
+                  style="margin: 0;">
+                <button type="submit" class="btn btn-delete">Xóa Sinh Viên</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${student == null}">
+        <h3 style="color: red;">Không tìm thấy thông tin sinh viên!</h3>
+        <a th:href="@{/students}" class="btn btn-back">Quay lại danh sách</a>
+    </div>
+
+</body>
+</html>

@@ -1,4 +1,8 @@
 <!doctype html>
+<!-- – Hiển thị danh sách toàn bộ sinh viên dưới dạng bảng.
+– Tích hợp ô nhập liệu để Tìm kiếm sinh viên theo tên.
+– Nút "Thêm Mới" để điều hướng sang trang tạo sinh viên.
+– Mỗi dòng dữ liệu cần có liên kết hoặc nút "Xem Chi Tiết" -->
 <html xmlns:th="http://www.thymeleaf.org">
   <!-- Khai bao namespace de dung th:* -->
   <head>
@@ -9,6 +13,7 @@
       body {
         font-family: 'Times New Roman', Times, serif;
         padding: 20px;
+        max-width: 1000px;
       }
       table {
         width: 100%;
@@ -28,21 +33,42 @@
       .text-danger {
         background-color: red;
       }
+
+      .btn {
+            padding: 8px 15px;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 16px;
+        }
+        .btn-back { background-color: #6c757d; color: white; }
+        .btn-edit { background-color: #ffc107; color: black; }
+        .btn-delete { background-color: #dc3545; color: white; }
+        .btn:hover { opacity: 0.8; }
     </style>
   </head>
   <body>
-    <h1>Danh Sach Sinh Vien (SSR)</h1>
+    <h1>Danh sách sinh viên (SSR)</h1>
     <form action="/students" method="GET">
-        <input type="text" name="keyword" placeholder="Nhap ten ..."/>
-        <button type="submit">Tim Sinh Vien</button>
+        <h1>Nhập tên sinh viên cần tìm</h1>
+        <input type="text" name="keyword" placeholder="Nhập tên ..."/>
+        <button type="submit" class="btn">Tìm sinh viên</button>
+    </form>
+    <form th:action="@{/students/create}" method="GET" style="display: inline;">
+        <button type="submit" class="btn">
+            Thêm mới
+        </button>
     </form>
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Ho va Ten</th>
+          <th>Họ và Tên</th>
           <th>Email</th>
-          <th>Tuoi</th>
+          <th>Tuổi</th>
+          <th>Chi tiết</th>
         </tr>
       </thead>
       <tbody>
@@ -53,6 +79,13 @@
           <td th:text="${student.name}">Ten Mau</td>
           <td th:text="${student.email}">Email Mau</td>
           <td th:text="${student.age}">0</td>
+          <td>
+                <form th:action="@{/students/{id}(id=${student.id})}" method="GET" style="display: inline;">
+                    <button type="submit" class="btn">
+                    Xem chi tiết
+                    </button>
+                </form>
+            </td>
         </tr>
       </tbody>
     </table>
